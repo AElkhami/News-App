@@ -1,4 +1,4 @@
-package com.example.news
+package com.example.news.discover.data.model
 
 import kotlinx.serialization.Serializable
 

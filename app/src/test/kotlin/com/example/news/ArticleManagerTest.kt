@@ -2,7 +2,7 @@ package com.example.news
 
 import android.content.Context
 import android.content.res.AssetManager
-import kotlinx.coroutines.test.runBlockingTest
+import com.example.news.discover.data.datasource.ArticleManager
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
