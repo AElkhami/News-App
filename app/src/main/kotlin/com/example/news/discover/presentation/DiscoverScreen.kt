@@ -12,25 +12,91 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.news.core.ui.composables.ArticleItem
 import com.example.news.core.ui.composables.CategoryTab
 import com.example.news.core.ui.composables.ScreenHeader
 import com.example.news.core.ui.theme.AppTheme
 import com.example.news.core.ui.theme.LocalAppColors
 import com.example.news.core.ui.theme.LocalAppDimens
-import com.example.news.discover.domain.Article
+import com.example.news.discover.domain.model.Article
+import com.example.news.discover.domain.model.Category
 
 @Composable
-fun ArticleScreen() {
-    ArticleScreenContent()
+fun DiscoverScreen(
+    viewModel: DiscoverViewModel = hiltViewModel()
+) {
+    LaunchedEffect(Unit) {
+        viewModel.loadArticles()
+    }
+
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    DiscoverScreenContent(
+        articles = uiState.articles,
+        categories = uiState.categories
+    )
 }
 
 @Composable
-fun ArticleScreenContent() {
+fun DiscoverScreenContent(
+    articles: List<Article>,
+    categories: List<Category>
+) {
+    val dimens = LocalAppDimens.current
+    val color = LocalAppColors.current
 
-    val mockArticles = listOf(
+    Column(
+        modifier = Modifier
+            .background(color = color.background)
+            .fillMaxSize()
+    ) {
+        ScreenHeader(
+            modifier = Modifier.padding(vertical = dimens.smallPadding),
+            title = "Discover",
+            description = "News from all around the world"
+        )
+
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = dimens.mediumPadding),
+            horizontalArrangement = Arrangement.spacedBy(dimens.smallPadding)
+        ) {
+            items(categories) { category ->
+                CategoryTab(
+                    tabName = category.name,
+                    isSelected = false
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(dimens.smallPadding))
+
+        LazyColumn(
+            contentPadding = PaddingValues(dimens.mediumPadding),
+            verticalArrangement = Arrangement.spacedBy(dimens.mediumPadding)
+        ) {
+            items(articles) { article ->
+                ArticleItem(
+                    imageUrl = article.headerImageURL,
+                    category = article.category,
+                    title = article.title,
+                    description = article.description
+                )
+            }
+        }
+    }
+
+}
+
+@Preview
+@Composable
+fun DiscoverScreenPreview() {
+    val articles = listOf(
         Article(
             category = "Health",
             title = "Breaking Developments in Heart Health",
@@ -51,55 +117,14 @@ fun ArticleScreenContent() {
         )
     )
 
-    val mockCategories = listOf(
-        "All", "Health", "Technology", "Entertainment", "Opinion"
+    val categories = listOf(
+        Category("All"),
+        Category("Health"),
+        Category("Technology"),
+        Category("Entertainment"),
+        Category("Opinion")
     )
-
-    val dimens = LocalAppDimens.current
-    val color = LocalAppColors.current
-
-    Column(modifier = Modifier.background(color = color.background).fillMaxSize()) {
-        ScreenHeader(
-            modifier = Modifier.padding(vertical = dimens.smallPadding),
-            title = "Discover",
-            description = "News from all around the world"
-        )
-
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = dimens.mediumPadding),
-            horizontalArrangement = Arrangement.spacedBy(dimens.smallPadding)
-        ) {
-            items(mockCategories) { category ->
-                CategoryTab(
-                    tabName = category,
-                    isSelected = false
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(dimens.smallPadding))
-
-        LazyColumn(
-            contentPadding = PaddingValues(dimens.mediumPadding),
-            verticalArrangement = Arrangement.spacedBy(dimens.mediumPadding)
-        ) {
-            items(mockArticles) { article ->
-                ArticleItem(
-                    imageUrl = article.headerImageURL,
-                    category = article.category,
-                    title = article.title,
-                    description = article.description
-                )
-            }
-        }
-    }
-
-}
-
-@Preview
-@Composable
-fun ArticleScreenPreview() {
     AppTheme {
-        ArticleScreenContent()
+        DiscoverScreenContent(articles = articles, categories = categories)
     }
 }

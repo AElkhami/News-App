@@ -5,6 +5,9 @@ plugins {
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -75,9 +78,20 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    // Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    // Hilt Navigation Compose
+    implementation(libs.hilt.navigation.compose)
+
     // Unit Tests
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.kotlin.test.junit)
+}
+
+tasks.named("check") {
+    dependsOn("lintDebug", "ktlintCheck")
 }

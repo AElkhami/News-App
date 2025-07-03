@@ -1,8 +1,11 @@
 package com.example.news.discover.presentation
 
-import com.example.news.discover.domain.Article
+import com.example.news.discover.domain.model.Article
+import com.example.news.discover.domain.model.Category
 
 data class DiscoverUiState(
-    val articles: List<Article>,
-    val categories: List<String>
+    val articles: List<Article> = emptyList(),
+    val categories: List<Category> = emptyList(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null
 )

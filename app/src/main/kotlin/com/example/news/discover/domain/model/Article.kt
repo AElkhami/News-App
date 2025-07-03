@@ -1,4 +1,4 @@
-package com.example.news.discover.domain
+package com.example.news.discover.domain.model
 
 data class Article(
     val category: String,
