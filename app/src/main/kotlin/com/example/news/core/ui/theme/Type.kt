@@ -9,23 +9,26 @@ import androidx.compose.runtime.staticCompositionLocalOf
 val DefaultAppTypography = Typography(
     headlineLarge = TextStyle(
         fontWeight = FontWeight.Bold,
-        fontSize = 30.sp,
-        color = DefaultAppColors.textPrimary
+        fontSize = 30.sp
+    ),
+    titleLarge = TextStyle(
+        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp
     ),
     titleMedium = TextStyle(
         fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
-        color = DefaultAppColors.textPrimary
+        fontSize = 16.sp
+    ), bodyMedium = TextStyle(
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     ),
     bodySmall = TextStyle(
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        color = DefaultAppColors.textSecondary
+        fontSize = 12.sp
     ),
     labelMedium = TextStyle(
         fontWeight = FontWeight.SemiBold,
-        fontSize = 14.sp,
-        color = DefaultAppColors.primary
+        fontSize = 14.sp
     )
 )
 

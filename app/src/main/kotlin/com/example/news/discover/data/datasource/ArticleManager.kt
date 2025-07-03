@@ -1,7 +1,7 @@
 package com.example.news.discover.data.datasource
 
 import android.content.Context
-import com.example.news.discover.data.model.Article
+import com.example.news.discover.data.model.ArticleDto
 import com.example.news.discover.data.model.ArticleResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,12 +15,12 @@ object ArticleManager {
         ArticleManager.context = context
     }
 
-    suspend fun getArticles(): List<Article> = withContext(Dispatchers.IO) {
+    suspend fun getArticles(): List<ArticleDto> = withContext(Dispatchers.IO) {
         val jsonString = readJsonFromAssets(context)
         parseJson(jsonString)
     }
 
-    private fun parseJson(jsonString: String): List<Article> {
+    private fun parseJson(jsonString: String): List<ArticleDto> {
         return Json.decodeFromString<ArticleResponse>(jsonString).articles
     }
 }

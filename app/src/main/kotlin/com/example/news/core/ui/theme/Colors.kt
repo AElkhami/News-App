@@ -14,9 +14,9 @@ data class AppColors(
 
 val LightAppColors = AppColors(
     primary = Color(0xFF007BFF),
-    background = Color(0xFFF9F9F9),
-    surface = Color.White,
-    textPrimary = Color(0xFF000000),
+    background = Color.White,
+    surface = Color(0xFFF7F7F7),
+    textPrimary = Color(0xFF292D31),
     textSecondary = Color(0xFF6C757D),
     divider = Color(0xFFE0E0E0)
 )

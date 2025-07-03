@@ -9,11 +9,15 @@ mockito = "5.2.0"
 coroutinesTest = "1.10.2"
 composeBom = "2025.06.01"
 activityCompose = "1.10.1"
+coil3 = "3.2.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
+
+# Coil
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
 
 # Unit Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
