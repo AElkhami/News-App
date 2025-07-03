@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: newsapp
+  description: 'Selectives Android - hiring assignment repository'
+  tags:
+    - ingested-by-devex
+spec:
+  type: unknown
+  owner: SEL
+  lifecycle: unknown
