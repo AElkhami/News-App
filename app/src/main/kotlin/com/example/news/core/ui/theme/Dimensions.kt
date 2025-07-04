@@ -16,7 +16,8 @@ data class AppDimens(
     val tabHeight: Dp = 40.dp,
     val tabCornerRadius: Dp = 20.dp,
     val articleImageSize: Dp = 100.dp,
-    val articleComposableHeigh: Dp = 100.dp
+    val articleComposableHeigh: Dp = 100.dp,
+    val loadingStrokeWidth: Dp = 4.dp
 )
 
 val DefaultAppDimens = AppDimens()

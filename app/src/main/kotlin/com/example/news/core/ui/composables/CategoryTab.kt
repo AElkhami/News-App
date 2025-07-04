@@ -1,5 +1,7 @@
 package com.example.news.core.ui.composables
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -48,7 +50,15 @@ fun CategoryTab(
     }
 }
 
-@Preview
+@Preview(
+    name = "Light Mode",
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun CategoryTabPreview() {
     AppTheme {
@@ -56,7 +66,14 @@ fun CategoryTabPreview() {
     }
 }
 
-@Preview
+@Preview(
+    name = "Light Mode",
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun CategoryTabSelectedPreview() {
     AppTheme {

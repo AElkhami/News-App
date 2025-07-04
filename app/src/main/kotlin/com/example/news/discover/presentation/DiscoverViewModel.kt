@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.news.R
 import com.example.news.core.ui.UiText
+import com.example.news.core.ui.state.ScreenState
 import com.example.news.core.util.fold
 import com.example.news.discover.domain.model.Category
 import com.example.news.discover.domain.usecase.GetArticleCategoriesUseCase
@@ -26,7 +27,7 @@ class DiscoverViewModel @Inject constructor(
 
     fun loadArticles() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            _uiState.update { it.copy(screenState = ScreenState.Loading) }
 
             getArticles().fold(
                 onSuccess = { articles ->
@@ -36,21 +37,21 @@ class DiscoverViewModel @Inject constructor(
                     }
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
+                            ScreenState.Content,
                             articles = articles,
                             filteredArticles = articles,
-                            categories = categories,
-                            errorMessage = null
+                            categories = categories
                         )
                     }
                 },
                 onError = { error ->
                     _uiState.update {
                         it.copy(
-                            isLoading = false,
+                            ScreenState.Error(
+                                message = UiText.StringResource(R.string.error_unknown)
+                            ),
                             articles = emptyList(),
                             categories = emptyList(),
-                            errorMessage = UiText.StringResource(R.string.error_unknown)
                         )
                     }
                 }

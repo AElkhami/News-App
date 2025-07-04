@@ -1,5 +1,7 @@
 package com.example.news.discover.presentation
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,9 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.news.core.ui.UiText
 import com.example.news.core.ui.composables.ArticleItem
 import com.example.news.core.ui.composables.CategoryTab
+import com.example.news.core.ui.composables.ErrorContent
+import com.example.news.core.ui.composables.LoadingIndicator
 import com.example.news.core.ui.composables.ScreenHeader
+import com.example.news.core.ui.state.ScreenState
+import com.example.news.core.ui.theme.AppDimens
 import com.example.news.core.ui.theme.AppTheme
 import com.example.news.core.ui.theme.LocalAppColors
 import com.example.news.core.ui.theme.LocalAppDimens
@@ -44,8 +51,12 @@ fun DiscoverScreen(
             articles = uiState.filteredArticles,
             categories = uiState.categories,
             selectedCategory = uiState.selectedCategory,
+            screenState = uiState.screenState,
             onTabClick = { category ->
                 viewModel.showArticlesForCategory(category)
+            },
+            onRetryClick = {
+                viewModel.loadArticles()
             }
         )
     }
@@ -57,7 +68,9 @@ fun DiscoverScreenContent(
     articles: List<Article>,
     categories: List<Category>,
     selectedCategory: String,
-    onTabClick: (String) -> Unit
+    screenState: ScreenState,
+    onTabClick: (String) -> Unit,
+    onRetryClick: () -> Unit
 ) {
     val dimens = LocalAppDimens.current
     val color = LocalAppColors.current
@@ -73,39 +86,77 @@ fun DiscoverScreenContent(
             description = "News from all around the world"
         )
 
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = dimens.mediumPadding),
-            horizontalArrangement = Arrangement.spacedBy(dimens.smallPadding)
-        ) {
-            items(categories) { category ->
-                CategoryTab(
-                    tabName = category.name,
-                    isSelected = category.name == selectedCategory,
-                    onClick = onTabClick
+        when (screenState) {
+            ScreenState.Content -> {
+                CategoriesList(
+                    dimens = dimens,
+                    categories = categories,
+                    selectedCategory = selectedCategory,
+                    onTabClick = { onTabClick }
                 )
+                Spacer(modifier = Modifier.height(dimens.smallPadding))
+                ArticlesList(dimens = dimens, articles = articles)
             }
-        }
 
-        Spacer(modifier = Modifier.height(dimens.smallPadding))
+            is ScreenState.Error -> ErrorContent(
+                message = screenState.message.asString(),
+                onRetry = { onRetryClick() }
+            )
 
-        LazyColumn(
-            contentPadding = PaddingValues(dimens.mediumPadding),
-            verticalArrangement = Arrangement.spacedBy(dimens.mediumPadding)
-        ) {
-            items(articles) { article ->
-                ArticleItem(
-                    imageUrl = article.headerImageURL,
-                    category = article.category,
-                    title = article.title,
-                    description = article.description
-                )
-            }
+            ScreenState.Loading -> LoadingIndicator()
         }
     }
-
 }
 
-@Preview
+@Composable
+private fun CategoriesList(
+    dimens: AppDimens,
+    categories: List<Category>,
+    selectedCategory: String,
+    onTabClick: (String) -> Unit
+) {
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = dimens.mediumPadding),
+        horizontalArrangement = Arrangement.spacedBy(dimens.smallPadding)
+    ) {
+        items(categories) { category ->
+            CategoryTab(
+                tabName = category.name,
+                isSelected = category.name == selectedCategory,
+                onClick = onTabClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun ArticlesList(
+    dimens: AppDimens,
+    articles: List<Article>
+) {
+    LazyColumn(
+        contentPadding = PaddingValues(dimens.mediumPadding),
+        verticalArrangement = Arrangement.spacedBy(dimens.mediumPadding)
+    ) {
+        items(articles) { article ->
+            ArticleItem(
+                imageUrl = article.headerImageURL,
+                category = article.category,
+                title = article.title,
+                description = article.description
+            )
+        }
+    }
+}
+
+@Preview(
+    name = "Light Mode",
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 fun DiscoverScreenPreview() {
     val articles = listOf(
@@ -141,6 +192,55 @@ fun DiscoverScreenPreview() {
             articles = articles,
             categories = categories,
             selectedCategory = Category.ALL.name,
-            onTabClick = {})
+            screenState = ScreenState.Content,
+            onTabClick = {},
+            onRetryClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Light Mode",
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Composable
+fun DiscoverScreenLoadingPreview() {
+    AppTheme {
+        DiscoverScreenContent(
+            articles = emptyList(),
+            categories = emptyList(),
+            selectedCategory = Category.ALL.name,
+            screenState = ScreenState.Loading,
+            onTabClick = {},
+            onRetryClick = {}
+        )
+    }
+}
+
+@Preview(
+    name = "Light Mode",
+    uiMode = UI_MODE_NIGHT_NO
+)
+@Preview(
+    name = "Dark Mode",
+    uiMode = UI_MODE_NIGHT_YES
+)
+@Composable
+fun DiscoverScreenErrorPreview() {
+    AppTheme {
+        DiscoverScreenContent(
+            articles = emptyList(),
+            categories = emptyList(),
+            selectedCategory = Category.ALL.name,
+            screenState = ScreenState.Error(
+                message = UiText.DynamicString("Something went wrong.")
+            ),
+            onTabClick = {},
+            onRetryClick = {}
+        )
     }
 }
