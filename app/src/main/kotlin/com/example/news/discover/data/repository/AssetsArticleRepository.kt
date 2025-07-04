@@ -1,7 +1,8 @@
 package com.example.news.discover.data.repository
 
+import com.example.news.core.Result
 import com.example.news.core.di.qualifier.ApplicationScope
-import com.example.news.discover.domain.ArticleDataSource
+import com.example.news.discover.domain.datasource.ArticleDataSource
 import com.example.news.discover.domain.model.Article
 import com.example.news.discover.domain.repository.ArticleRepository
 import javax.inject.Inject
@@ -17,15 +18,15 @@ class AssetsArticleRepository @Inject constructor(
     @ApplicationScope coroutineScope: CoroutineScope
 ) : ArticleRepository {
 
-    private val articlesStateFlow: StateFlow<List<Article>> =
+    private val articlesStateFlow: StateFlow<Result<List<Article>>> =
         flow {
             emit(dataSource.fetchArticles())
         }
             .stateIn(
                 coroutineScope,
                 started = SharingStarted.Lazily,
-                initialValue = emptyList()
+                initialValue = Result.Success(emptyList())
             )
 
-    override fun getArticles(): Flow<List<Article>> = articlesStateFlow
+    override fun getArticles(): Flow<Result<List<Article>>> = articlesStateFlow
 }

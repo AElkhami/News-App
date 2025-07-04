@@ -2,6 +2,7 @@ package com.example.news.discover.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.news.R
 import com.example.news.discover.domain.usecase.ObserveArticleCategoriesUseCase
 import com.example.news.discover.domain.usecase.ObserveArticlesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,6 +15,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.example.news.core.Result
+import com.example.news.core.ui.UiText
+import com.example.news.core.ui.mapper.toUiText
 
 @HiltViewModel
 class DiscoverViewModel @Inject constructor(
@@ -26,14 +30,16 @@ class DiscoverViewModel @Inject constructor(
     fun loadArticles() {
         viewModelScope.launch {
             combine(
-                observeArticles(),          // Flow<List<Article>>
-                observeCategories()         // Flow<List<Category>>
-            ) { articles, categories ->
+                observeArticles(),
+                observeCategories()
+            ) { articlesResult, categoriesResult ->
                 // on each emission, build a new UI state
                 DiscoverUiState(
                     isLoading   = false,
-                    articles    = articles,
-                    categories  = categories
+                    articles = (articlesResult as? Result.Success)?.data ?: emptyList(),
+                    categories = (categoriesResult as? Result.Success)?.data ?: emptyList(),
+                    errorMessage = (articlesResult as? Result.Error)?.error?.toUiText()
+                        ?: (categoriesResult as? Result.Error)?.error?.toUiText()
                 )
             }
                 .onStart {
@@ -41,11 +47,10 @@ class DiscoverViewModel @Inject constructor(
                     _uiState.update { it.copy(isLoading = true, errorMessage = null) }
                 }
                 .catch { throwable ->
-                    // if upstream throws, emit error state
                     _uiState.update {
                         it.copy(
                             isLoading   = false,
-                            errorMessage = throwable.localizedMessage
+                            errorMessage = UiText.StringResource(R.string.error_unknown)
                         )
                     }
                 }

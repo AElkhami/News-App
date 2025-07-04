@@ -5,7 +5,7 @@ import com.example.news.core.di.qualifier.ApplicationScope
 import com.example.news.discover.data.datasource.AssetArticleDataSource
 import com.example.news.discover.data.di.qualifier.ResponseAssetName
 import com.example.news.discover.data.repository.AssetsArticleRepository
-import com.example.news.discover.domain.ArticleDataSource
+import com.example.news.discover.domain.datasource.ArticleDataSource
 import com.example.news.discover.domain.repository.ArticleRepository
 import dagger.Module
 import dagger.Provides

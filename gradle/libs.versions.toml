@@ -13,7 +13,7 @@ coil3 = "3.2.0"
 ktLint = "12.3.0"
 hilt = "2.56.2"
 hiltCompose = "1.2.0"
-kspVersion = "2.1.21-2.0.1"
+kspVersion = "2.2.0-2.0.2"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -51,12 +51,20 @@ hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", ve
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinSerialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+
 # Compose Compiler
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
 # Lint
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktLint" }
+
 # Hilt
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+
+# KSP
 ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
+
+#Parselize
+kotlin-parselize = { id = "org.jetbrains.kotlin.plugin.parcelize" }
 
 

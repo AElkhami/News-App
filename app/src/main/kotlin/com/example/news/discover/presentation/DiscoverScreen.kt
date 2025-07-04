@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -37,14 +38,18 @@ fun DiscoverScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    DiscoverScreenContent(
-        articles = uiState.articles,
-        categories = uiState.categories
-    )
+    Scaffold { screenPadding ->
+        DiscoverScreenContent(
+            modifier = Modifier.padding(screenPadding),
+            articles = uiState.articles,
+            categories = uiState.categories
+        )
+    }
 }
 
 @Composable
 fun DiscoverScreenContent(
+    modifier: Modifier = Modifier,
     articles: List<Article>,
     categories: List<Category>
 ) {
@@ -52,7 +57,7 @@ fun DiscoverScreenContent(
     val color = LocalAppColors.current
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .background(color = color.background)
             .fillMaxSize()
     ) {
