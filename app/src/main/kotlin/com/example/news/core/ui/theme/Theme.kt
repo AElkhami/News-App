@@ -10,10 +10,13 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
+import coil3.ImageLoader
+import com.example.news.core.ui.compositionlocal.LocalImageLoader
 
 @Composable
 fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
+    imageLoader: ImageLoader,
     content: @Composable () -> Unit
 ) {
     val colors = if (useDarkTheme) DarkAppColors else LightAppColors
@@ -23,7 +26,8 @@ fun AppTheme(
     CompositionLocalProvider(
         LocalAppColors provides colors,
         LocalAppDimens provides dimens,
-        LocalAppTypography provides typography
+        LocalAppTypography provides typography,
+        LocalImageLoader provides imageLoader
     ) {
         MaterialTheme(
             colorScheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

@@ -11,7 +11,9 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import coil3.imageLoader
 import com.example.news.core.ui.theme.AppTheme
 import com.example.news.core.ui.theme.LocalAppColors
 import com.example.news.core.ui.theme.LocalAppDimens
@@ -51,7 +53,9 @@ fun LoadingIndicator(
 )
 @Composable
 fun LoadingIndicatorPreview() {
-    AppTheme {
+    AppTheme(
+        imageLoader = LocalContext.current.imageLoader
+    ) {
         LoadingIndicator()
     }
 }
