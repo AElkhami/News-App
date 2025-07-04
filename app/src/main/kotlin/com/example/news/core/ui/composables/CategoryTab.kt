@@ -1,6 +1,7 @@
 package com.example.news.core.ui.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -19,7 +20,9 @@ import com.example.news.core.ui.theme.LocalAppTypography
 fun CategoryTab(
     modifier: Modifier = Modifier,
     tabName: String,
-    isSelected: Boolean) {
+    isSelected: Boolean,
+    onClick: (String) -> Unit
+) {
     val dimens = LocalAppDimens.current
     val color = LocalAppColors.current
     val typography = LocalAppTypography.current
@@ -27,17 +30,20 @@ fun CategoryTab(
     Row(
         modifier = modifier
             .background(
-                color = if(isSelected) color.primary else color.surface,
+                color = if (isSelected) color.primary else color.surface,
                 shape = RoundedCornerShape(dimens.cardCornerRadius),
             )
-            .padding(vertical = dimens.smallPadding, horizontal = dimens.mediumPadding),
+            .padding(vertical = dimens.smallPadding, horizontal = dimens.mediumPadding)
+            .clickable {
+                onClick(tabName)
+            },
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = tabName,
             style = typography.bodySmall,
-            color = if(isSelected) color.background else color.textSecondary
+            color = if (isSelected) color.background else color.textSecondary
         )
     }
 }
@@ -46,7 +52,7 @@ fun CategoryTab(
 @Composable
 fun CategoryTabPreview() {
     AppTheme {
-        CategoryTab(tabName = "All", isSelected = false)
+        CategoryTab(tabName = "All", isSelected = false, onClick = {})
     }
 }
 
@@ -54,6 +60,6 @@ fun CategoryTabPreview() {
 @Composable
 fun CategoryTabSelectedPreview() {
     AppTheme {
-        CategoryTab(tabName = "All", isSelected = true)
+        CategoryTab(tabName = "All", isSelected = true, onClick = {})
     }
 }

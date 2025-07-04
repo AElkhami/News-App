@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.news.R
 import com.example.news.core.ui.UiText
 import com.example.news.core.util.fold
+import com.example.news.discover.domain.model.Category
 import com.example.news.discover.domain.usecase.GetArticleCategoriesUseCase
 import com.example.news.discover.domain.usecase.GetArticlesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 class DiscoverViewModel @Inject constructor(
     private val getArticles: GetArticlesUseCase,
     private val getCategories: GetArticleCategoriesUseCase
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(DiscoverUiState())
     val uiState: StateFlow<DiscoverUiState> = _uiState.asStateFlow()
 
@@ -29,11 +30,15 @@ class DiscoverViewModel @Inject constructor(
 
             getArticles().fold(
                 onSuccess = { articles ->
-                    val categories = getCategories(articles)
+                    val categories = buildList {
+                        add(Category.ALL)
+                        addAll(getCategories(articles))
+                    }
                     _uiState.update {
                         it.copy(
                             isLoading = false,
                             articles = articles,
+                            filteredArticles = articles,
                             categories = categories,
                             errorMessage = null
                         )
@@ -49,6 +54,22 @@ class DiscoverViewModel @Inject constructor(
                         )
                     }
                 }
+            )
+        }
+    }
+
+    fun showArticlesForCategory(category: String) {
+        val articles = _uiState.value.articles
+        val filteredArticles = if (category == Category.ALL.name) {
+            articles
+        } else {
+            articles.filter { it.category.name == category }
+        }
+
+        _uiState.update {
+            it.copy(
+                filteredArticles = filteredArticles,
+                selectedCategory = category
             )
         }
     }

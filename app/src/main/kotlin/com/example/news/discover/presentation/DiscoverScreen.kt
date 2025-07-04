@@ -41,8 +41,12 @@ fun DiscoverScreen(
     Scaffold { screenPadding ->
         DiscoverScreenContent(
             modifier = Modifier.padding(screenPadding),
-            articles = uiState.articles,
-            categories = uiState.categories
+            articles = uiState.filteredArticles,
+            categories = uiState.categories,
+            selectedCategory = uiState.selectedCategory,
+            onTabClick = { category ->
+                viewModel.showArticlesForCategory(category)
+            }
         )
     }
 }
@@ -51,7 +55,9 @@ fun DiscoverScreen(
 fun DiscoverScreenContent(
     modifier: Modifier = Modifier,
     articles: List<Article>,
-    categories: List<Category>
+    categories: List<Category>,
+    selectedCategory: String,
+    onTabClick: (String) -> Unit
 ) {
     val dimens = LocalAppDimens.current
     val color = LocalAppColors.current
@@ -74,7 +80,8 @@ fun DiscoverScreenContent(
             items(categories) { category ->
                 CategoryTab(
                     tabName = category.name,
-                    isSelected = false
+                    isSelected = category.name == selectedCategory,
+                    onClick = onTabClick
                 )
             }
         }
@@ -103,19 +110,19 @@ fun DiscoverScreenContent(
 fun DiscoverScreenPreview() {
     val articles = listOf(
         Article(
-            category = "Health",
+            category = Category("Health"),
             title = "Breaking Developments in Heart Health",
             description = "Latest advancements in cardiology and heart care...",
             headerImageURL = "https://example.com/images/heart-health.jpg"
         ),
         Article(
-            category = "Technology",
+            category = Category("Technology"),
             title = "Cybersecurity in the Modern Age",
             description = "Understanding the evolving landscape of cybersecurity threats...",
             headerImageURL = "https://example.com/images/cybersecurity.jpg"
         ),
         Article(
-            category = "Entertainment",
+            category = Category("Entertainment"),
             title = "The New Wave of Online Streaming",
             description = "Exploring the impact of streaming services on television and movies...Exploring the impact of streaming services on television and movies...Exploring the impact of streaming services on television and movies...Exploring the impact of streaming services on television and movies...Exploring the impact of streaming services on television and movies...Exploring the impact of streaming services on television and movies...",
             headerImageURL = "https://example.com/images/streaming.jpg"
@@ -130,6 +137,10 @@ fun DiscoverScreenPreview() {
         Category("Opinion")
     )
     AppTheme {
-        DiscoverScreenContent(articles = articles, categories = categories)
+        DiscoverScreenContent(
+            articles = articles,
+            categories = categories,
+            selectedCategory = Category.ALL.name,
+            onTabClick = {})
     }
 }

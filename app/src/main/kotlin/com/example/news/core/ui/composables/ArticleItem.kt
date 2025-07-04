@@ -20,6 +20,7 @@ import com.example.news.core.ui.theme.AppTheme
 import com.example.news.core.ui.theme.LocalAppColors
 import com.example.news.core.ui.theme.LocalAppDimens
 import com.example.news.core.ui.theme.LocalAppTypography
+import com.example.news.discover.domain.model.Category
 
 @Composable
 fun ArticleItem(
@@ -27,7 +28,7 @@ fun ArticleItem(
     imageUrl: String,
     title: String,
     description: String,
-    category: String
+    category: Category
 ) {
     val dimens = LocalAppDimens.current
     val color = LocalAppColors.current
@@ -54,7 +55,7 @@ fun ArticleItem(
                 )
         ) {
             Text(
-                text = category,
+                text = category.name,
                 style = typography.bodySmall,
                 color = color.textSecondary
             )
@@ -86,7 +87,7 @@ fun ArticleItemPreview() {
             imageUrl = "https://example.com/images/heart-health.jpg",
             title = "Breaking Developments in Heart Health",
             description = "Latest advancements in cardiology and heart care...",
-            category = "Health"
+            category = Category("Health")
         )
     }
 }

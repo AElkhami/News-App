@@ -8,6 +8,5 @@ class GetArticleCategoriesUseCase {
         return articles
             .map(Article::category)
             .distinct()
-            .map(::Category)
     }
 }
