@@ -10,23 +10,27 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.imageLoader
 import com.example.news.core.ui.UiText
 import com.example.news.core.ui.composables.ArticleItem
 import com.example.news.core.ui.composables.CategoryTab
 import com.example.news.core.ui.composables.ErrorContent
 import com.example.news.core.ui.composables.LoadingIndicator
 import com.example.news.core.ui.composables.ScreenHeader
+import com.example.news.core.ui.composables.TabAnimatedLazyColumn
 import com.example.news.core.ui.state.ScreenState
 import com.example.news.core.ui.theme.AppDimens
 import com.example.news.core.ui.theme.AppTheme
@@ -39,11 +43,14 @@ import com.example.news.discover.domain.model.Category
 fun DiscoverScreen(
     viewModel: DiscoverViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.loadArticles()
-    }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        if (uiState.screenState == ScreenState.Loading) {
+            viewModel.loadArticles()
+        }
+    }
 
     Scaffold { screenPadding ->
         DiscoverScreenContent(
@@ -75,6 +82,7 @@ fun DiscoverScreenContent(
     val dimens = LocalAppDimens.current
     val color = LocalAppColors.current
 
+    val listState = rememberLazyListState()
     Column(
         modifier = modifier
             .background(color = color.background)
@@ -92,10 +100,15 @@ fun DiscoverScreenContent(
                     dimens = dimens,
                     categories = categories,
                     selectedCategory = selectedCategory,
-                    onTabClick = { onTabClick }
+                    onTabClick = onTabClick
                 )
                 Spacer(modifier = Modifier.height(dimens.smallPadding))
-                ArticlesList(dimens = dimens, articles = articles)
+                ArticlesList(
+                    selectedCategory = selectedCategory,
+                    articles = articles,
+                    categories = categories,
+                    listState = listState
+                )
             }
 
             is ScreenState.Error -> ErrorContent(
@@ -119,11 +132,14 @@ private fun CategoriesList(
         contentPadding = PaddingValues(horizontal = dimens.mediumPadding),
         horizontalArrangement = Arrangement.spacedBy(dimens.smallPadding)
     ) {
-        items(categories) { category ->
+        items(
+            items = categories,
+            key = { category -> category.name }
+        ) { category ->
             CategoryTab(
                 tabName = category.name,
                 isSelected = category.name == selectedCategory,
-                onClick = onTabClick
+                onClick = { onTabClick(it) }
             )
         }
     }
@@ -131,21 +147,27 @@ private fun CategoriesList(
 
 @Composable
 private fun ArticlesList(
-    dimens: AppDimens,
-    articles: List<Article>
+    articles: List<Article>,
+    categories: List<Category>,
+    selectedCategory: String,
+    listState: LazyListState
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(dimens.mediumPadding),
-        verticalArrangement = Arrangement.spacedBy(dimens.mediumPadding)
-    ) {
-        items(articles) { article ->
-            ArticleItem(
-                imageUrl = article.headerImageURL,
-                category = article.category,
-                title = article.title,
-                description = article.description
-            )
+    TabAnimatedLazyColumn(
+        targetState = selectedCategory,
+        allStates = categories.map { it.name },
+        items = articles,
+        listState = listState,
+        key = { article ->
+            "${(article as Article).title}_${article.category.name}"
         }
+    ) { article ->
+        val art = article as Article
+        ArticleItem(
+            imageUrl = art.headerImageURL,
+            category = art.category,
+            title = art.title,
+            description = art.description
+        )
     }
 }
 
@@ -187,7 +209,9 @@ fun DiscoverScreenPreview() {
         Category("Entertainment"),
         Category("Opinion")
     )
-    AppTheme {
+    AppTheme(
+        imageLoader = LocalContext.current.imageLoader
+    ) {
         DiscoverScreenContent(
             articles = articles,
             categories = categories,
@@ -209,7 +233,9 @@ fun DiscoverScreenPreview() {
 )
 @Composable
 fun DiscoverScreenLoadingPreview() {
-    AppTheme {
+    AppTheme(
+        imageLoader = LocalContext.current.imageLoader
+    ) {
         DiscoverScreenContent(
             articles = emptyList(),
             categories = emptyList(),
@@ -231,7 +257,9 @@ fun DiscoverScreenLoadingPreview() {
 )
 @Composable
 fun DiscoverScreenErrorPreview() {
-    AppTheme {
+    AppTheme(
+        imageLoader = LocalContext.current.imageLoader
+    ) {
         DiscoverScreenContent(
             articles = emptyList(),
             categories = emptyList(),
