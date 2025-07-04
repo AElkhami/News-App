@@ -1,8 +1,8 @@
 package com.example.news.discover.domain.di
 
 import com.example.news.discover.domain.repository.ArticleRepository
-import com.example.news.discover.domain.usecase.ObserveArticleCategoriesUseCase
-import com.example.news.discover.domain.usecase.ObserveArticlesUseCase
+import com.example.news.discover.domain.usecase.GetArticleCategoriesUseCase
+import com.example.news.discover.domain.usecase.GetArticlesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,13 +14,13 @@ import dagger.hilt.android.scopes.ViewModelScoped
 object DomainModule {
     @Provides
     @ViewModelScoped
-    fun provideObserveArticlesUseCase(repository: ArticleRepository)
-            : ObserveArticlesUseCase = ObserveArticlesUseCase(repository)
+    fun provideGetArticlesUseCase(repository: ArticleRepository)
+            : GetArticlesUseCase = GetArticlesUseCase(repository)
 
     @Provides
     @ViewModelScoped
-    fun provideObserveArticleCategoriesUseCase(observeArticlesUseCase: ObserveArticlesUseCase)
-            : ObserveArticleCategoriesUseCase =
-        ObserveArticleCategoriesUseCase(observeArticlesUseCase)
+    fun provideGetArticleCategoriesUseCase()
+            : GetArticleCategoriesUseCase =
+        GetArticleCategoriesUseCase()
 
 }

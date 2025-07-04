@@ -1,7 +1,6 @@
 package com.example.news.discover.data.di
 
 import android.content.Context
-import com.example.news.core.di.qualifier.ApplicationScope
 import com.example.news.discover.data.datasource.AssetArticleDataSource
 import com.example.news.discover.data.di.qualifier.ResponseAssetName
 import com.example.news.discover.data.repository.AssetsArticleRepository
@@ -13,7 +12,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.json.Json
 
@@ -48,6 +46,5 @@ object DataModule {
     @Singleton
     fun provideArticleRepository(
         dataSource: ArticleDataSource,
-        @ApplicationScope applicationScope: CoroutineScope
-    ): ArticleRepository = AssetsArticleRepository(dataSource, applicationScope)
+    ): ArticleRepository = AssetsArticleRepository(dataSource)
 }

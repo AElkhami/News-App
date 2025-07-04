@@ -2,7 +2,7 @@ package com.example.news.discover.data.datasource
 
 import android.content.res.AssetManager
 import com.example.news.core.error.AppError
-import com.example.news.core.Result
+import com.example.news.core.util.Result
 import com.example.news.discover.data.di.qualifier.ResponseAssetName
 import com.example.news.discover.data.mapper.toDomain
 import com.example.news.discover.data.model.ArticleDto
