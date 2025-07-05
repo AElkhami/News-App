@@ -12,20 +12,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.imageLoader
+import com.example.core_ui.theme.LocalAppColors
+import com.example.core_ui.theme.LocalAppDimens
 
 @Composable
 fun LoadingIndicator(
     modifier: Modifier = Modifier
 ) {
-    val dimens = _root_ide_package_.com.example.core_ui.theme.LocalAppDimens.current
-    val colors = _root_ide_package_.com.example.core_ui.theme.LocalAppColors.current
+    val dimens = LocalAppDimens.current
+    val colors = LocalAppColors.current
 
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(colors.background),
+            .background(colors.background)
+            .testTag("LoadingIndicator"),
         contentAlignment = Alignment.Center
     ) {
         Column(

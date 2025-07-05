@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import coil3.ImageLoader
@@ -13,6 +14,7 @@ import coil3.imageLoader
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import com.example.core_ui.R
+import com.example.core_ui.theme.LocalAppDimens
 
 @Composable
 fun OnlineImage(
@@ -20,10 +22,12 @@ fun OnlineImage(
     modifier: Modifier = Modifier,
     imageLoader: ImageLoader = LocalContext.current.imageLoader
 ) {
-    val dimens = _root_ide_package_.com.example.core_ui.theme.LocalAppDimens.current
+    val dimens = LocalAppDimens.current
 
     AsyncImage(
-        modifier = modifier.size(dimens.articleImageSize),
+        modifier = modifier
+            .testTag("OnlineImage")
+            .size(dimens.articleImageSize),
         model = ImageRequest.Builder(LocalContext.current)
             .data(imageUrl)
             .crossfade(true)

@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.imageLoader
@@ -36,6 +37,7 @@ fun ArticleItem(
 
     Row(
         modifier = modifier
+            .testTag("ArticleItem_$title")
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {

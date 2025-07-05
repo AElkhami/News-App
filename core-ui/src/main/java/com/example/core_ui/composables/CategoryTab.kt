@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.imageLoader
 import com.example.core_ui.theme.AppTheme
@@ -33,6 +34,7 @@ fun CategoryTab(
 
     Row(
         modifier = modifier
+            .testTag("CategoryTab_$tabName")
             .background(
                 color = if (isSelected) color.primary else color.surface,
                 shape = RoundedCornerShape(dimens.cardCornerRadius),
