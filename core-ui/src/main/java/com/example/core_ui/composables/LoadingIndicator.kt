@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.imageLoader
+import com.example.core_ui.theme.AppTheme
 import com.example.core_ui.theme.LocalAppColors
 import com.example.core_ui.theme.LocalAppDimens
 
@@ -54,7 +55,7 @@ fun LoadingIndicator(
 )
 @Composable
 fun LoadingIndicatorPreview() {
-    _root_ide_package_.com.example.core_ui.theme.AppTheme(
+    AppTheme(
         imageLoader = LocalContext.current.imageLoader
     ) {
         LoadingIndicator()

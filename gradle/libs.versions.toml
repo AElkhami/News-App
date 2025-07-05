@@ -10,6 +10,7 @@ coroutinesTest = "1.10.2"
 composeBom = "2025.06.01"
 activityCompose = "1.10.1"
 coil3 = "3.2.0"
+coilOkhttp = "3.2.0"
 ktLint = "12.3.0"
 hilt = "2.56.2"
 hiltCompose = "1.2.0"
@@ -29,6 +30,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 
 # Coil
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3" }
+coil-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coilOkhttp" }
 
 # Unit Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }

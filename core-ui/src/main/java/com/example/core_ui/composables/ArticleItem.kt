@@ -18,6 +18,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import coil3.imageLoader
+import com.example.core_ui.compositionlocal.LocalImageLoader
+import com.example.core_ui.theme.AppTheme
 import com.example.core_ui.theme.LocalAppColors
 import com.example.core_ui.theme.LocalAppDimens
 import com.example.core_ui.theme.LocalAppTypography
@@ -34,6 +36,7 @@ fun ArticleItem(
     val dimens = LocalAppDimens.current
     val color = LocalAppColors.current
     val typography = LocalAppTypography.current
+    val imageLoader = LocalImageLoader.current
 
     Row(
         modifier = modifier
@@ -43,7 +46,8 @@ fun ArticleItem(
     ) {
         OnlineImage(
             modifier = Modifier.size(dimens.articleImageSize),
-            imageUrl = imageUrl
+            imageUrl = imageUrl,
+            imageLoader = imageLoader
         )
         Column(
             modifier = Modifier
@@ -90,7 +94,7 @@ fun ArticleItem(
 )
 @Composable
 fun ArticleItemPreview() {
-    _root_ide_package_.com.example.core_ui.theme.AppTheme(
+    AppTheme(
         imageLoader = LocalContext.current.imageLoader
     ) {
         ArticleItem(

@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import coil3.ImageLoader
+import com.example.core_ui.compositionlocal.LocalImageLoader
 
 @Composable
 fun AppTheme(
@@ -26,7 +27,7 @@ fun AppTheme(
         LocalAppColors provides colors,
         LocalAppDimens provides dimens,
         LocalAppTypography provides typography,
-        _root_ide_package_.com.example.core_ui.compositionlocal.LocalImageLoader provides imageLoader
+        LocalImageLoader provides imageLoader
     ) {
         MaterialTheme(
             colorScheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

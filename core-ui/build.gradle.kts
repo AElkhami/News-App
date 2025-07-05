@@ -60,6 +60,9 @@ dependencies {
     //Coil
     implementation(libs.coil.compose)
 
+    // Coil 3 OkHttp
+    implementation(libs.coil.okhttp)
+
     // BOM
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
