@@ -5,6 +5,8 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+// Suppress warning about Gradle's RepositoriesMode.PREFER_SETTINGS being @Incubating
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
@@ -15,3 +17,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "NewsApp"
 include(":app")
+include(":core")
+include(":core-ui")
+include(":discover")

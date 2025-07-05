@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_parse">There is an error while retrieving the data, please try again later!</string>
+    <string name="error_unknown">Unknown error has occurred, please try again later!</string>
+    <string name="button_retry">Retry</string>
+    <string name="article_image">Article image</string>
+</resources>

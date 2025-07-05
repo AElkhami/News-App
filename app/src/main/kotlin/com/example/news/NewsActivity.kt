@@ -5,8 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import coil3.ImageLoader
-import com.example.news.core.ui.theme.AppTheme
-import com.example.news.discover.presentation.DiscoverScreen
+import com.example.core_ui.theme.AppTheme
+import com.example.discover.presentation.DiscoverScreen
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

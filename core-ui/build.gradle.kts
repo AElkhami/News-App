@@ -1,28 +1,23 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.ktlint)
-    alias(libs.plugins.kotlin.parselize)
-    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.parselize)
 }
 
 android {
-    namespace = "com.example.news"
+    namespace = "com.example.core_ui"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.news"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildFeatures {
@@ -55,8 +50,6 @@ kotlin {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":core-ui"))
-    implementation(project(":discover"))
 
     implementation(libs.core.ktx)
     implementation(libs.material)
@@ -89,19 +82,5 @@ dependencies {
     // Hilt Navigation Compose
     implementation(libs.hilt.navigation.compose)
 
-    //LeakCanary
-    debugImplementation(libs.leakCanary)
-
-    // Timber (Logging)
-    implementation(libs.timber)
-
-    // Unit Tests
     testImplementation(libs.junit)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockito.inline)
-    testImplementation(libs.kotlin.test.junit)
-}
-
-tasks.named("check") {
-    dependsOn("lintDebug", "ktlintCheck")
 }

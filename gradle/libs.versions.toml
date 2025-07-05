@@ -16,6 +16,7 @@ hiltCompose = "1.2.0"
 kspVersion = "2.2.0-2.0.2"
 leakCanaryVersion = "2.14"
 timberVersion = "5.0.1"
+jetbrainsKotlinJvm = "2.2.0"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -59,6 +60,8 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timberVersio
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinSerialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 
 # Compose Compiler
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -74,5 +77,6 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "kspVersion" }
 
 #Parselize
 kotlin-parselize = { id = "org.jetbrains.kotlin.plugin.parcelize" }
+
 
 
