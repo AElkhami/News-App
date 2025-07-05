@@ -14,6 +14,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import timber.log.Timber
 
 class AssetArticleDataSource @Inject constructor(
     private val assets: AssetManager,
@@ -25,12 +26,18 @@ class AssetArticleDataSource @Inject constructor(
         return withContext(dispatcher) {
             runCatching {
                 val raw = assets.open(assetName).bufferedReader().use { it.readText() }
+
+                Timber.d("Raw JSON loaded: ${raw.length} characters")
+
                 val articles = json.decodeFromString(ArticleResponse.serializer(), raw)
                     .articles
                     .map(ArticleDto::toDomain)
 
                 Result.Success(articles)
             }.getOrElse { throwable ->
+
+                Timber.e(throwable, "Failed to parse articles from asset: $assetName")
+
                 if (throwable is CancellationException) throw throwable
                 Result.Error(AppError.ParseError)
             }

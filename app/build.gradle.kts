@@ -86,6 +86,12 @@ dependencies {
     // Hilt Navigation Compose
     implementation(libs.hilt.navigation.compose)
 
+    //LeakCanary
+    debugImplementation(libs.leakCanary)
+
+    // Timber (Logging)
+    implementation(libs.timber)
+
     // Unit Tests
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
