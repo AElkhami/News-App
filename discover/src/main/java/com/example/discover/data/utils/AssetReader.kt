@@ -3,6 +3,9 @@ package com.example.discover.data.utils
 import android.content.res.AssetManager
 import javax.inject.Inject
 
+/**
+ * Utility class for reading Android assets as strings.
+ */
 class AssetReader @Inject constructor(
     private val assets: AssetManager
 ) {

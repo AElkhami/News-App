@@ -6,6 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import kotlinx.parcelize.Parcelize
 
+
+/**
+ * Represents a string that can either be a plain dynamic [String] or a string resource.
+ *
+ * This is useful for unifying text representations in view models and UI layers
+ * without leaking Android framework APIs into domain or data layers.
+ */
 @Parcelize
 sealed class UiText : Parcelable {
     data class DynamicString(val value: String) : UiText()

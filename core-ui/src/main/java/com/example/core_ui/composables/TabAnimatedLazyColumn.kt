@@ -27,6 +27,23 @@ private const val DEFAULT_DIRECTION = +1
 private const val REVERSE_DIRECTION = -1
 private const val DEFAULT_TAB_INDEX = 0
 
+/**
+ * A [LazyColumn] that animates horizontally when switching between tabs.
+ *
+ * This composable displays a scrollable list of [items], and animates horizontally
+ * with a slide/fade effect when the [targetState] changes. The scroll position is reset
+ * when the tab changes.
+ *
+ * @param T The type of the tab state.
+ * @param targetState The currently selected tab state.
+ * @param allStates The full list of possible tab states.
+ * @param items The list of items to display in the [LazyColumn].
+ * @param listState The [LazyListState] for controlling scroll position.
+ * @param modifier The [Modifier] to be applied to the container.
+ * @param animationDuration Duration of the slide/fade animations in milliseconds.
+ * @param key A key selector for the [items], used to optimize recomposition.
+ * @param itemContent The composable lambda to display each item.
+ */
 @Composable
 fun <T : Any> TabAnimatedLazyColumn(
     targetState: T,

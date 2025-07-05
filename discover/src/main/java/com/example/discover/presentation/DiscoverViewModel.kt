@@ -26,6 +26,12 @@ class DiscoverViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(DiscoverUiState(selectedCategory = Category.ALL.name))
     val uiState: StateFlow<DiscoverUiState> = _uiState.asStateFlow()
 
+    /**
+     * Loads all articles and their categories.
+     *
+     * Updates the [uiState] to [ScreenState.Loading] while loading, and then to
+     * either [ScreenState.Content] on success or [ScreenState.Error] on failure.
+     */
     fun loadArticles() {
         viewModelScope.launch {
             _uiState.update { it.copy(screenState = ScreenState.Loading) }
@@ -53,6 +59,11 @@ class DiscoverViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Updates the [uiState] to show articles filtered by the selected [category].
+     *
+     * @param category The name of the selected category.
+     */
     fun showArticlesForCategory(category: String) {
         _uiState.update { state ->
             val filtered = filterArticles(state.articles, category)
@@ -63,6 +74,15 @@ class DiscoverViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Filters the given list of [articles] based on the specified [category].
+     *
+     * If the [category] is [Category.ALL], returns all articles.
+     *
+     * @param articles The list of articles to filter.
+     * @param category The category to filter by.
+     * @return A filtered list of articles.
+     */
     private fun filterArticles(articles: List<Article>, category: String): List<Article> {
         return if (category == Category.ALL.name) {
             articles
@@ -71,6 +91,13 @@ class DiscoverViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Updates the [uiState] with the loaded articles and categories,
+     * setting the screen state to [ScreenState.Content].
+     *
+     * @param articles The list of loaded articles.
+     * @param categories The list of available categories.
+     */
     private fun setArticles(articles: List<Article>, categories: List<Category>) {
         _uiState.update {
             it.copy(
