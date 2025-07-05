@@ -1,5 +1,6 @@
 [versions]
 agp = "8.11.0"
+javaxInject = "1"
 kotlin = "2.2.0"
 core-ktx = "1.16.0"
 junit = "4.13.2"
@@ -22,6 +23,7 @@ googleTruth = "1.4.4"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 

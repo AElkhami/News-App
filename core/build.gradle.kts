@@ -13,6 +13,11 @@ kotlin {
     }
 }
 dependencies{
+    //Serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.javax.inject)
+
     testFixturesImplementation(libs.kotlinx.coroutines.test)
     testFixturesImplementation(libs.junit)
 }
