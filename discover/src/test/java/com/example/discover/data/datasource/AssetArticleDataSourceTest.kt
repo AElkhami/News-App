@@ -1,25 +1,25 @@
 package com.example.discover.data.datasource
 
-import android.content.res.AssetManager
 import com.example.core.error.AppError
 import com.example.core.util.Result
+import com.example.core.util.JsonParser
+import com.example.discover.data.model.ArticleResponse
+import com.example.discover.data.utils.AssetReader
 import com.google.common.truth.Truth.assertThat
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
-import java.io.FileNotFoundException
-import java.io.InputStream
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import kotlinx.serialization.json.Json
+import kotlinx.serialization.SerializationException
 import org.junit.Before
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AssetArticleDataSourceTest {
 
-    private val assetManager: AssetManager = mockk()
-    private val json: Json = Json { ignoreUnknownKeys = true }
+    private val assetReader: AssetReader = mockk()
+    private val jsonParser: JsonParser = mockk()
     private val dispatcher = UnconfinedTestDispatcher()
 
     private val assetName = "test.json"
@@ -28,38 +28,54 @@ class AssetArticleDataSourceTest {
 
     @Before
     fun setUp() {
-        dataSource = AssetArticleDataSource(assetManager, json, dispatcher, assetName)
+        dataSource = AssetArticleDataSource(
+            assetReader,
+            jsonParser,
+            dispatcher,
+            assetName
+        )
     }
 
     @Test
     fun `fetchArticles returns Success when JSON is valid`() = runTest {
         val jsonString = """
-                              {
-                                  "articles": [
-                                      {
-                                          "type": "Tech",
-                                          "title": "Title",
-                                          "description": "Desc",
-                                          "headerImageURL": "url"
-                                      }
-                                  ]
-                              }
-                          """.trimIndent()
+            {
+                "articles": [
+                    {
+                        "type": "Tech",
+                        "title": "Title",
+                        "description": "Desc",
+                        "headerImageURL": "url"
+                    }
+                ]
+            }
+        """.trimIndent()
 
+        val response = ArticleResponse(
+            articles = listOf(
+                com.example.discover.data.model.ArticleDto(
+                    type = "Tech",
+                    title = "Title",
+                    description = "Desc",
+                    headerImageURL = "url"
+                )
+            )
+        )
 
-        val stream: InputStream = jsonString.byteInputStream()
-        every { assetManager.open(assetName) } returns stream
+        coEvery { assetReader.read(assetName) } returns jsonString
+        coEvery { jsonParser.parse(jsonString, ArticleResponse.serializer()) } returns response
 
         val result = dataSource.fetchArticles()
 
         assertThat(result).isInstanceOf(Result.Success::class.java)
         val articles = (result as Result.Success).data
-        assertThat(articles).isNotEmpty()
+        assertThat(articles).hasSize(1)
+        assertThat(articles.first().title).isEqualTo("Title")
     }
 
     @Test
     fun `fetchArticles returns FileNotFound when asset not found`() = runTest {
-        every { assetManager.open(assetName) } throws FileNotFoundException()
+        coEvery { assetReader.read(assetName) } throws java.io.FileNotFoundException()
 
         val result = dataSource.fetchArticles()
 
@@ -69,8 +85,9 @@ class AssetArticleDataSourceTest {
     @Test
     fun `fetchArticles returns ParseError when JSON invalid`() = runTest {
         val invalidJson = "INVALID_JSON"
-        val stream: InputStream = invalidJson.byteInputStream()
-        every { assetManager.open(assetName) } returns stream
+
+        coEvery { assetReader.read(assetName) } returns invalidJson
+        coEvery { jsonParser.parse(invalidJson, ArticleResponse.serializer()) } throws SerializationException("Invalid JSON")
 
         val result = dataSource.fetchArticles()
 
@@ -79,7 +96,7 @@ class AssetArticleDataSourceTest {
 
     @Test
     fun `fetchArticles returns InvalidData when IllegalArgumentException thrown`() = runTest {
-        every { assetManager.open(assetName) } throws IllegalArgumentException("bad file")
+        coEvery { assetReader.read(assetName) } throws IllegalArgumentException("bad file")
 
         val result = dataSource.fetchArticles()
 
@@ -88,7 +105,7 @@ class AssetArticleDataSourceTest {
 
     @Test
     fun `fetchArticles returns Unknown on other exceptions`() = runTest {
-        every { assetManager.open(assetName) } throws RuntimeException("something went wrong")
+        coEvery { assetReader.read(assetName) } throws RuntimeException("something went wrong")
 
         val result = dataSource.fetchArticles()
 

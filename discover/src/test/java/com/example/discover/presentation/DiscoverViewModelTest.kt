@@ -82,7 +82,7 @@ class DiscoverViewModelTest {
         val initialState = DiscoverUiState(
             screenState = ScreenState.Content,
             articles = articles,
-            filteredArticles = emptyList(), // doesn't matter
+            filteredArticles = emptyList(),
             categories = listOf(Category.ALL, Category("Tech"), Category("Sports"))
         )
 
