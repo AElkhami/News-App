@@ -1,5 +1,6 @@
 plugins {
     id("java-library")
+    id("java-test-fixtures")
     alias(libs.plugins.jetbrains.kotlin.jvm)
 }
 java {
@@ -10,4 +11,8 @@ kotlin {
     compilerOptions {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
+}
+dependencies{
+    testFixturesImplementation(libs.kotlinx.coroutines.test)
+    testFixturesImplementation(libs.junit)
 }

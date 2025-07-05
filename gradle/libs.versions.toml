@@ -5,7 +5,6 @@ core-ktx = "1.16.0"
 junit = "4.13.2"
 material = "1.12.0"
 kotlinSerialization = "1.9.0"
-mockito = "5.2.0"
 coroutinesTest = "1.10.2"
 composeBom = "2025.06.01"
 activityCompose = "1.10.1"
@@ -17,6 +16,9 @@ kspVersion = "2.2.0-2.0.2"
 leakCanaryVersion = "2.14"
 timberVersion = "5.0.1"
 jetbrainsKotlinJvm = "2.2.0"
+mockkVersion = "1.14.4"
+turbineVersion = "1.2.1"
+googleTruth = "1.4.4"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -29,8 +31,10 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil3"
 # Unit Tests
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
-mockito-inline = { module = "org.mockito:mockito-inline", version.ref = "mockito" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockkVersion" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbineVersion" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+google-truth = { module = "com.google.truth:truth", version.ref = "googleTruth" }
 
 # Compose BOM
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }

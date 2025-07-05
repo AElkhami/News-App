@@ -10,8 +10,6 @@ import timber.log.Timber
 class NewsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-//        if (BuildConfig.DEBUG) {
         Timber.plant(PrefixedDebugTree(prefix = LOGGING_PREFIX))
-//        }
     }
 }

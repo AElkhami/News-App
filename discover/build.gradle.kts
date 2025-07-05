@@ -48,6 +48,8 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":core-ui"))
 
+    testImplementation(testFixtures(project(":core")))
+
     implementation(libs.core.ktx)
     implementation(libs.material)
 
@@ -85,6 +87,8 @@ dependencies {
     // Unit Tests
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.google.truth)
 }

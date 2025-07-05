@@ -98,7 +98,6 @@ dependencies {
     // Unit Tests
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockito.inline)
     testImplementation(libs.kotlin.test.junit)
 }
 

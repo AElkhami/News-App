@@ -1,6 +1,5 @@
 package com.example.core_ui
 
-import android.content.Context
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -20,13 +19,6 @@ sealed class UiText : Parcelable {
         return when (this) {
             is DynamicString -> value
             is StringResource -> stringResource(resId, *args)
-        }
-    }
-
-    fun asString(context: Context): String {
-        return when (this) {
-            is DynamicString -> value
-            is StringResource -> context.getString(resId, *args)
         }
     }
 }
