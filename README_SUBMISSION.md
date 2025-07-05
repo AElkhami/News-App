@@ -1,4 +1,4 @@
-# Android Developer Technical Challenge: NewsApp Refactoring
+# Android Developer Technical Challenge: NewsApp Post Refactoring
 
 ## Overview
 This project has been thoroughly refactored to meet production ready standards,
@@ -38,6 +38,9 @@ The application is organized as a **multi-module project** to achieve the follow
 
 Beyond the core architecture, several additional design choices were made to enhance the robustness, observability, and developer experience of the project:
 
+- **Reusable Composables**
+  Built the UI using reusable, modular Composables to ensure a consistent design system, improve readability, and reduce maintenance overhead.
+ 
 - **Logging with Timber**  
   Integrated the Timber library for structured, flexible logging during development and debugging.  
   This provides clear and contextual runtime information while keeping the logging implementation lightweight and easy to disable or replace in production builds.
@@ -72,6 +75,14 @@ In designing this project, certain trade offs were made consciously to balance s
     - *Trade off:* Smaller community and ecosystem compared to Mockito.
 
 These decisions were made with a long term, production focused mindset, prioritizing robustness, ecosystem alignment, and Kotlin first tooling, even at the cost of some additional complexity or less popularity in certain tools.
+
+## UI & Theming
+
+- The application supports both light and dark (night) modes, automatically adapting to the user’s system theme preference. 
+
+- It also integrates **Material You (dynamic color)** on supported Android versions, providing a modern, personalized look and feel aligned with Android’s design guidelines.
+
+- In addition, the application is **Localization ready**. While currently only English strings are provided, the app is designed to automatically adapt to additional locales once translations are added, with no further code changes required.
 
 ## Things I Would Implement to Make the Application Production Ready
 
