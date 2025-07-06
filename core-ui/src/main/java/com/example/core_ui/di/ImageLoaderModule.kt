@@ -16,6 +16,8 @@ import javax.inject.Singleton
 import okhttp3.OkHttpClient
 
 private const val IMAGE_CACHE_DIR_NAME = "image_cache"
+private const val USER_AGENT_NAME = "User-Agent"
+private const val USER_AGENT_VALUE = "Mozilla/5.0 (Android)"
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -27,7 +29,7 @@ object ImageLoaderModule {
         return OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val newRequest = chain.request().newBuilder()
-                    .header("User-Agent", "Mozilla/5.0 (Android)") // Add User-Agent
+                    .header(USER_AGENT_NAME, USER_AGENT_VALUE)
                     .build()
                 chain.proceed(newRequest)
             }
