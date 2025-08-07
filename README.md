@@ -1,4 +1,4 @@
-# Android Developer Technical Challenge: NewsApp Post Refactoring
+# News App
 
 ## Overview
 This project has been thoroughly refactored to meet production ready standards,
