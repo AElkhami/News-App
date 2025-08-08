@@ -8,7 +8,6 @@ import com.example.discover.data.model.ArticleDto
 import com.example.discover.data.model.ArticleResponse
 import com.example.discover.data.utils.AssetReader
 import com.example.core.util.JsonParser
-import com.example.discover.domain.datasource.ArticleDataSource
 import com.example.discover.domain.model.Article
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext

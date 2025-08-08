@@ -1,4 +1,4 @@
-package com.example.discover.domain.datasource
+package com.example.discover.data.datasource
 
 import com.example.core.util.Result
 import com.example.discover.domain.model.Article
