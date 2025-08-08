@@ -45,13 +45,10 @@ import com.example.discover.domain.model.Category
 fun DiscoverScreen(
     viewModel: DiscoverViewModel = hiltViewModel()
 ) {
-
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        if (uiState.screenState == ScreenState.Loading) {
-            viewModel.loadArticles()
-        }
+        viewModel.loadArticles()
     }
 
     Scaffold(
@@ -79,7 +76,7 @@ fun DiscoverScreenContent(
     articles: List<Article>,
     categories: List<Category>,
     selectedCategory: String,
-    screenState: ScreenState,
+    screenState: ScreenState<List<Article>>,
     onTabClick: (String) -> Unit,
     onRetryClick: () -> Unit
 ) {
@@ -99,7 +96,7 @@ fun DiscoverScreenContent(
         )
 
         when (screenState) {
-            ScreenState.Content -> {
+            is ScreenState.Content -> {
                 CategoriesList(
                     dimens = dimens,
                     categories = categories,
@@ -220,7 +217,7 @@ fun DiscoverScreenPreview() {
             articles = articles,
             categories = categories,
             selectedCategory = Category.ALL.name,
-            screenState = ScreenState.Content,
+            screenState = ScreenState.Content(articles),
             onTabClick = {},
             onRetryClick = {}
         )

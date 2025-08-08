@@ -33,29 +33,31 @@ class DiscoverViewModel @Inject constructor(
      * either [ScreenState.Content] on success or [ScreenState.Error] on failure.
      */
     fun loadArticles() {
-        viewModelScope.launch {
-            _uiState.update { it.copy(screenState = ScreenState.Loading) }
+        if (_uiState.value.screenState == ScreenState.Loading) {
+            viewModelScope.launch {
+                _uiState.update { it.copy(screenState = ScreenState.Loading) }
 
-            getArticles().fold(
-                onSuccess = { articles ->
-                    val categories = buildList {
-                        add(Category.ALL)
-                        addAll(getCategories(articles))
+                getArticles().fold(
+                    onSuccess = { articles ->
+                        val categories = buildList {
+                            add(Category.ALL)
+                            addAll(getCategories(articles))
+                        }
+                        setArticles(articles, categories)
+                    },
+                    onError = { error ->
+                        _uiState.update {
+                            it.copy(
+                                screenState = ScreenState.Error(
+                                    message = error.toUiText()
+                                ),
+                                categories = emptyList(),
+                                filteredArticles = emptyList()
+                            )
+                        }
                     }
-                    setArticles(articles, categories)
-                },
-                onError = { error ->
-                    _uiState.update {
-                        it.copy(
-                            ScreenState.Error(
-                                message = error.toUiText()
-                            ),
-                            articles = emptyList(),
-                            categories = emptyList(),
-                        )
-                    }
-                }
-            )
+                )
+            }
         }
     }
 
@@ -66,10 +68,15 @@ class DiscoverViewModel @Inject constructor(
      */
     fun showArticlesForCategory(category: String) {
         _uiState.update { state ->
-            val filtered = filterArticles(state.articles, category)
+            val normalizedCategory = if (state.categories.any { it.name == category }) category else Category.ALL.name
+            val articles = (state.screenState as? ScreenState.Content<List<Article>>)?.data
+                ?: return@update state.copy(
+                    selectedCategory = normalizedCategory,
+                    filteredArticles = emptyList()
+                )
             state.copy(
-                selectedCategory = category,
-                filteredArticles = filtered
+                selectedCategory = normalizedCategory,
+                filteredArticles = filterArticles(articles, normalizedCategory)
             )
         }
     }
@@ -101,8 +108,7 @@ class DiscoverViewModel @Inject constructor(
     private fun setArticles(articles: List<Article>, categories: List<Category>) {
         _uiState.update {
             it.copy(
-                screenState = ScreenState.Content,
-                articles = articles,
+                screenState = ScreenState.Content(articles),
                 filteredArticles = articles,
                 categories = categories
             )

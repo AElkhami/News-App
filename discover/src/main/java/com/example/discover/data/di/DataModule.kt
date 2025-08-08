@@ -6,7 +6,7 @@ import com.example.discover.data.datasource.AssetArticleDataSource
 import com.example.discover.data.di.qualifier.ResponseAssetName
 import com.example.discover.data.repository.AssetsArticleRepository
 import com.example.discover.data.utils.AssetReader
-import com.example.discover.domain.datasource.ArticleDataSource
+import com.example.discover.data.datasource.ArticleDataSource
 import com.example.discover.domain.repository.ArticleRepository
 import dagger.Module
 import dagger.Provides
